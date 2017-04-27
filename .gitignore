@@ -1,2 +1,3 @@
-lib/
+lib/metricslib.js
+lib/metricslib.js.map
 node_modules/

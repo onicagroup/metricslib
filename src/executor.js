@@ -43,7 +43,7 @@ export default class MetricsExecutor {
     )
   }
 
-  _wrapMethodCall(target, name, func, nameCb, ...args) {
+  _wrapMethodCall(target, name, func, ...args) {
     this.calledFunctions.push(name)
 
     if (args.length && typeof args[args.length-1] === 'function') {

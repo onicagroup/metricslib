@@ -13,8 +13,12 @@ module.exports.wrap = function(object) {
 
   return interceptor(object, (target, name, func) => {
     return function(...args) {
-      console.log('execute', args)
-      return metrics.execute(o => func.apply(o, args))
+      // We can't use the func passed-in here, because we actually
+      // need to make sure we get the proxy created by MetricsBuilder
+      // and that'll only happen if we look for [name] inside of the
+      // wrapped object passed into execute.
+
+      return metrics.execute(o => o[name](...args))
     }
   })
 }

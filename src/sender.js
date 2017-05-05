@@ -4,6 +4,7 @@ export default class MetricsSender {
 
   static hookInstalled = false
   static metrics = []
+  static enabled = true
 
   static queue(metric) {
     if (!this.hookInstalled) {
@@ -17,7 +18,7 @@ export default class MetricsSender {
   static flush() {
     console.log(`Transmit ${this.metrics.length} metrics`)
 
-    if (!this.metrics.length)
+    if (!this.metrics.length || !this.enabled)
       return
 
     console.log(this.metrics)

@@ -26,3 +26,11 @@ module.exports.wrap = function(object) {
 module.exports.flush = function() {
   MetricsSender.flush()
 }
+
+module.exports.enable = function() {
+  MetricsSender.enabled = true
+}
+
+module.exports.disable = function() {
+  MetricsSender.enabled = false
+}

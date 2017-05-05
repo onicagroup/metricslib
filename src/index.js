@@ -26,3 +26,7 @@ module.exports.wrap = function(object) {
 module.exports.flush = function() {
   MetricsSender.flush()
 }
+
+module.exports.namespace = function(namespace) {
+  MetricsSender.namespace = namespace
+}

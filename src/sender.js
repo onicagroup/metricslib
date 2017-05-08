@@ -25,7 +25,7 @@ export default class MetricsSender {
 
     try {
       this._cloudwatch().putMetricData({
-        Namespace: 'Metrics',
+        Namespace: this.namespace,
         MetricData: this.metrics
       }).promise()
     } catch (e) {
@@ -36,12 +36,9 @@ export default class MetricsSender {
   }
 
   static _installHooks() {
-    this._prependListener(process, 'beforeExit', this._beforeExit.bind(this))
-  }
-
-  static _beforeExit() {
-    console.log('Flush metrics beforeExit')
-    this.flush()
+    ['beforeExit', 'uncaughtException'].forEach((event) => {
+      this._prependListener(process, event, this.flush.bind(this))
+    })
   }
 
   // Node 4.x doesn't have prependListener, so we do this craziness
@@ -63,4 +60,11 @@ export default class MetricsSender {
     return this.cloudwatch
   }
 
+  static set namespace(namespace) {
+    this._namespace = namespace
+  }
+
+  static get namespace() {
+    return this._namespace || 'Metrics'
+  }
 }

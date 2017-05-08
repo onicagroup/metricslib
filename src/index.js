@@ -27,6 +27,10 @@ module.exports.flush = function() {
   MetricsSender.flush()
 }
 
+module.exports.namespace = function(namespace) {
+  MetricsSender.namespace = namespace
+}
+
 module.exports.enable = function() {
   MetricsSender.enabled = true
 }

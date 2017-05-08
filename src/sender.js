@@ -24,7 +24,7 @@ export default class MetricsSender {
 
     try {
       this._cloudwatch().putMetricData({
-        Namespace: 'Metrics',
+        Namespace: this.namespace,
         MetricData: this.metrics
       }).promise()
     } catch (e) {
@@ -62,4 +62,11 @@ export default class MetricsSender {
     return this.cloudwatch
   }
 
+  static set namespace(namespace) {
+    this._namespace = namespace
+  }
+
+  static get namespace() {
+    return this._namespace || 'Metrics'
+  }
 }

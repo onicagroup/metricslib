@@ -3,6 +3,7 @@ import AWS from 'aws-sdk';
 import MetricsBuilder from 'builder'
 import MetricsSender from 'sender'
 import interceptor from 'interceptor'
+import NullLogger from 'null_logger'
 
 module.exports = function(...args) {
   return new MetricsBuilder(...args)
@@ -29,4 +30,8 @@ module.exports.flush = function() {
 
 module.exports.namespace = function(namespace) {
   MetricsSender.namespace = namespace
+}
+
+module.exports.logger = function(logger) {
+  MetricsSender.logger = logger ? logger : NullLogger
 }

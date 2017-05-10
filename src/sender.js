@@ -1,9 +1,12 @@
 import AWS from 'aws-sdk';
 
+import ConsoleLogger from 'console_logger'
+
 export default class MetricsSender {
 
   static hookInstalled = false
   static metrics = []
+  static logger = ConsoleLogger
 
   static queue(metric) {
     if (!this.hookInstalled) {
@@ -15,12 +18,12 @@ export default class MetricsSender {
   }
 
   static flush() {
-    console.log(`Transmit ${this.metrics.length} metrics`)
+    this.logger.debug(`Transmit ${this.metrics.length} metrics`)
 
     if (!this.metrics.length)
       return
 
-    console.log(this.metrics)
+    this.logger.debug(this.metrics)
 
     try {
       this._cloudwatch().putMetricData({
@@ -28,7 +31,7 @@ export default class MetricsSender {
         MetricData: this.metrics
       }).promise()
     } catch (e) {
-      console.error('Exception while transmitting metrics (ignored)', e)
+      this.logger.error('Exception while transmitting metrics (ignored)', e)
     }
 
     this.metrics = []

@@ -32,6 +32,14 @@ module.exports.namespace = function(namespace) {
   MetricsSender.namespace = namespace
 }
 
+module.exports.enable = function() {
+  MetricsSender.enabled = true
+}
+
+module.exports.disable = function() {
+  MetricsSender.enabled = false
+}
+
 module.exports.logger = function(logger) {
   MetricsSender.logger = logger ? logger : NullLogger
 }

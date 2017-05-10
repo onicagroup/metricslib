@@ -6,6 +6,7 @@ export default class MetricsSender {
 
   static hookInstalled = false
   static metrics = []
+  static enabled = true
   static logger = ConsoleLogger
 
   static queue(metric) {
@@ -20,7 +21,7 @@ export default class MetricsSender {
   static flush() {
     this.logger.debug(`Transmit ${this.metrics.length} metrics`)
 
-    if (!this.metrics.length)
+    if (!this.metrics.length || !this.enabled)
       return
 
     this.logger.debug(this.metrics)

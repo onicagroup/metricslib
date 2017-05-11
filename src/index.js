@@ -46,3 +46,8 @@ module.exports.disable = function() {
 module.exports.logger = function(logger) {
   MetricsSender.logger = logger ? logger : NullLogger
 }
+
+module.exports.dimensions = function(dimensions) {
+  MetricsBuilder.dimensions = dimensions
+}
+

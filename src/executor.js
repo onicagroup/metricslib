@@ -28,6 +28,7 @@ export default class MetricsExecutor {
   _completion() {
     const diff = Date.now()-this.start
     MetricsSender.queue({
+      Dimensions: this.metric.dimensions,
       MetricName: this.name,
       Unit: 'Milliseconds',
       Timestamp: this.start/1000,

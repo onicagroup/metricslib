@@ -3,9 +3,18 @@ import MetricsSender from 'sender'
 import MetricsExecutor from 'executor'
 
 export default class MetricsBuilder {
+  static set dimensions(dimensions) {
+    this._dimensions = Object.keys(dimensions)
+      .map((dimensionName) => ({ Name: dimensionName, Value: dimensions[dimensionName] }))
+  }
+
+  static get dimensions() {
+    return this._dimensions || []
+  }
 
   constructor(...args) {
     this.objects = []
+    this.dimensions = this.constructor.dimensions
 
     for (let i = 0; i < args.length; i++) {
       const arg = args[i]
@@ -43,11 +52,11 @@ export default class MetricsBuilder {
       throw 'Metric name required'
 
     MetricsSender.queue({
+      Dimensions: this.dimensions,
       MetricName: this.name,
       Unit: 'Count',
       Timestamp: new Date(),
       Value: value
     })
   }
-
 }

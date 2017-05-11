@@ -36,9 +36,12 @@ export default class MetricsExecutor {
   }
 
   _wrapObjects(objects) {
+    const outer = this
     return objects.map(object =>
       interceptor(object, (target, name, func) =>
-        this._wrapMethodCall.bind(this, target, name, func)
+        function(...args){
+          return outer._wrapMethodCall(this, name, func, ...args)
+        }
       )
     )
   }

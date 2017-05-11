@@ -1,3 +1,4 @@
+import 'source-map-support/register'
 
 import AWS from 'aws-sdk';
 import MetricsBuilder from 'builder'

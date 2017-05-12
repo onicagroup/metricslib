@@ -26,14 +26,12 @@ export default class MetricsSender {
 
     this.logger.debug(this.metrics)
 
-    try {
-      this._cloudwatch().putMetricData({
-        Namespace: this.namespace,
-        MetricData: this.metrics
-      }).promise()
-    } catch (e) {
-      this.logger.error('Exception while transmitting metrics (ignored)', e)
-    }
+    this._cloudwatch().putMetricData({
+      Namespace: this.namespace,
+      MetricData: this.metrics
+    }).promise().catch((error) => {
+      this.logger.error('Exception while transmitting metrics (ignored)', error)
+    })
 
     this.metrics = []
   }

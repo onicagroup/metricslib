@@ -15,7 +15,7 @@ export default class MetricsExecutor {
 
     this.name = this.metric.name ? this.metric.name : this.calledFunctions.join('-')
 
-    if (typeof res.then === 'function') {
+    if (res && typeof res.then === 'function') {
       return res
         .then(r => { this._completion(); return r })
         .catch(e => { this._completion(); throw e })

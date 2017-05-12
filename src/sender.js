@@ -18,7 +18,7 @@ export default class MetricsSender {
     this.metrics.push(metric)
   }
 
-  static flush() {
+  static async flush() {
     this.logger.debug(`Transmit ${this.metrics.length} metrics`)
 
     if (!this.metrics.length || !this.enabled)
@@ -27,7 +27,7 @@ export default class MetricsSender {
     this.logger.debug(this.metrics)
 
     try {
-      this._cloudwatch().putMetricData({
+      await this._cloudwatch().putMetricData({
         Namespace: this.namespace,
         MetricData: this.metrics
       }).promise()

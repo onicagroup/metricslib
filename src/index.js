@@ -8,7 +8,7 @@ module.exports = function(...args) {
   return new MetricsBuilder(...args)
 }
 
-module.exports.wrap = function(object) {
+module.exports.wrap = function(object, config = {}) {
   const metrics = new MetricsBuilder().with(object)
 
   let proxy =  interceptor(object, (target, name, func) => {
@@ -18,7 +18,7 @@ module.exports.wrap = function(object) {
       // and that'll only happen if we look for [name] inside of the
       // wrapped object passed into execute.
 
-      return metrics.execute(o => o[name].bind(this)(...args))
+      return metrics.execute(o => o[name].bind(config.recursive ? this : target)(...args))
     }
   })
 

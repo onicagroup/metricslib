@@ -15,7 +15,7 @@ export default class MetricsExecutor {
 
     this.name = this.metric.name ? this.metric.name : this.calledFunctions.join('-')
 
-    if (typeof res.then === 'function') {
+    if (res && typeof res.then === 'function') {
       return res
         .then(r => { this._completion(); return r })
         .catch(e => { this._completion(); throw e })
@@ -36,9 +36,12 @@ export default class MetricsExecutor {
   }
 
   _wrapObjects(objects) {
+    const outer = this
     return objects.map(object =>
       interceptor(object, (target, name, func) =>
-        this._wrapMethodCall.bind(this, target, name, func)
+        function(...args){
+          return outer._wrapMethodCall(this, name, func, ...args)
+        }
       )
     )
   }

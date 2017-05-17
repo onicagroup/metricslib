@@ -9,19 +9,21 @@ module.exports = function(...args) {
   return new MetricsBuilder(...args)
 }
 
-module.exports.wrap = function(object) {
+module.exports.wrap = function(object, config = {}) {
   const metrics = new MetricsBuilder().with(object)
 
-  return interceptor(object, (target, name, func) => {
+  let proxy =  interceptor(object, (target, name, func) => {
     return function(...args) {
       // We can't use the func passed-in here, because we actually
       // need to make sure we get the proxy created by MetricsBuilder
       // and that'll only happen if we look for [name] inside of the
       // wrapped object passed into execute.
 
-      return metrics.execute(o => o[name](...args))
+      return metrics.execute(o => o[name].bind(config.recursive ? this : target)(...args))
     }
   })
+
+  return proxy
 }
 
 module.exports.flush = function() {

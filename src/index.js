@@ -1,3 +1,4 @@
+import 'source-map-support/register'
 
 import AWS from 'aws-sdk';
 import MetricsBuilder from 'builder'
@@ -45,3 +46,8 @@ module.exports.disable = function() {
 module.exports.logger = function(logger) {
   MetricsSender.logger = logger ? logger : NullLogger
 }
+
+module.exports.dimensions = function(dimensions) {
+  MetricsBuilder.dimensions = dimensions
+}
+

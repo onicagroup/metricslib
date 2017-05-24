@@ -1,6 +1,6 @@
 {
   "name": "metricslib",
-  "version": "1.0.0-dev",
+  "version": "1.0.0",
   "description": "A simple library for collecting metrics for transmission to CloudWatch",
   "main": "lib/metricslib.min.js",
   "scripts": {

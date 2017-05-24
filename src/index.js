@@ -10,7 +10,7 @@ module.exports = function(...args) {
 }
 
 module.exports.wrap = function(object, config = {}) {
-  const metrics = new MetricsBuilder().with(object)
+  const metrics = new MetricsBuilder().with(object)._recursive()
 
   let proxy =  interceptor(object, (target, name, func) => {
     return function(...args) {

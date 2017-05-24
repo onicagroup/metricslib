@@ -34,6 +34,12 @@ export default class MetricsBuilder {
     return this
   }
 
+  // Only intended for use with wrap(). Not a public API.
+  _recursive() {
+    this.recursive = true
+    return this
+  }
+
   execute(block) {
     return new MetricsExecutor(this).run(block)
   }

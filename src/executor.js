@@ -40,7 +40,7 @@ export default class MetricsExecutor {
     return objects.map(object =>
       interceptor(object, (target, name, func) =>
         function(...args){
-          return outer._wrapMethodCall(this, name, func, ...args)
+          return outer._wrapMethodCall(outer.metric.recursive ? this : target, name, func, ...args)
         }
       )
     )

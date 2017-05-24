@@ -88,6 +88,16 @@ s3.listBuckets().promise()
 
 In the case of an object wrapped via Metrics.wrap(), the name of the metrics cannot be customized.
 
+There's also the option of wrapping an object and have metrics on all the object's subsequent method calls that the first method calls:
+
+```javascript
+let s3 = Metrics.wrap(new AWS.S3(), { recursive: true })
+s3.listBuckets().promise()
+```
+
+With the `recursive` option set to `true` it'll send metrics for every method call made on that object during the execution of the first method call.
+Default is `recursive: false`.
+
 Manual Metrics
 ===
 Sometimes a metric other than the duration of a function is needed. In these cases, Metriclib is a convenient wrapper around the CloudWatch API:
@@ -95,7 +105,65 @@ Sometimes a metric other than the duration of a function is needed. In these cas
 ```javascript
 Metrics('recordsProcessed').count(records.length) // Sends a metric with unit=Count
 ```
+
+Dimensions
+===
+Setting global dimensions for metrics is also supported:
+
+```javascript
+Metrics.dimensions({ dimensionName1: 'dimensionValue1', dimensionName2: 'dimensionValue2' })
+```
+
+This makes every metric sent to Cloudwatch have both dimensions with the set values.
+
+Namespace
+===
+In order to set a namespace for the metrics:
+
+```javascript
+Metrics.namespace('MyCustomNamespace')
+```
+
+This will group metrics in that specific namespace, if no namespace is set then the default `Metrics` namespace is used.
+
 Metrics Queuing
 ===
 Metrics are queued and transmitted in batches. Currently, a batch is only transmitted
 on exit, upon completion of an AWS Lambda execution, or manually by calling flush().
+
+Disable or Enable metrics
+===
+There's an option for completely disabling sending the metrics to Cloudwatch with:
+
+```javascript
+Metrics.disable()
+```
+
+While disabled no metrics will be sent to Cloudwatch if `Metrics.flush()` is called.
+A good use case is if you're running unit tests for your code and don't want to send any metrics to Cloudwatch.
+
+You can also enable it back using:
+
+```javascript
+Metrics.enable()
+```
+
+Custom Logger
+===
+Metricslib uses a simple console logger in order to output some debug information.
+You can add your own custom logger with:
+
+```javascript
+const logger = new Logger() // Instantiate or use your own custom logger
+Metrics.logger(logger)
+```
+
+Your own custom logger must implement the usual logging methods (`error`, `info`, `debug`, etc..).
+
+There's also the option of removing all the logging output from the Metricslib with:
+
+```javascript
+Metrics.logger(null) // Any other falsy value will also work
+```
+
+This will set a `NullLogger` to Metricslib and no output will be seen.

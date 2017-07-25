@@ -18,7 +18,7 @@ export default class MetricsSender {
     this.metrics.push(metric)
   }
 
-  static async flush() {
+  static flush() {
     this.logger.debug(`Transmit ${this.metrics.length} metrics`)
 
     if (!this.metrics.length || !this.enabled)
@@ -26,16 +26,15 @@ export default class MetricsSender {
 
     this.logger.debug(this.metrics)
 
-    try {
-      await this._cloudwatch().putMetricData({
+    while(this.metrics.length > 0) {
+      this._cloudwatch().putMetricData({
         Namespace: this.namespace,
-        MetricData: this.metrics
+        MetricData: this.metrics.splice(0, 20)
       }).promise()
-    } catch (e) {
-      this.logger.error('Exception while transmitting metrics (ignored)', e)
+      .catch((error) => {
+        this.logger.error('Exception while transmitting metrics (ignored)', error)
+      })
     }
-
-    this.metrics = []
   }
 
   static _installHooks() {

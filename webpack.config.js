@@ -28,7 +28,7 @@ module.exports = {
               ['env', {
                 targets: {
                   browsers: ['last 2 versions'],
-                  node: 4.3
+                  node: '4.3'
                 },
                 //debug: true,
                 //useBuiltIns: true

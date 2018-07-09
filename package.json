@@ -1,6 +1,6 @@
 {
   "name": "metricslib",
-  "version": "1.2.0-dev",
+  "version": "1.2.0",
   "description": "A simple library for collecting metrics for transmission to CloudWatch",
   "main": "lib/metricslib.min.js",
   "scripts": {
@@ -8,9 +8,9 @@
     "dev": "rm -rf lib; WEBPACK_ENV=dev webpack --progress --colors --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository" :{
-    "type" : "git",
-    "url" : "https://github.com/sturdycloud/metricslib.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sturdycloud/metricslib.git"
   },
   "author": "Sturdy Networks, LLC",
   "license": "Apache-2.0",

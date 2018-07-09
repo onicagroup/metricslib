@@ -47,6 +47,10 @@ module.exports.logger = function(logger) {
   MetricsSender.logger = logger ? logger : NullLogger
 }
 
+module.exports.configure = function(config) {
+  MetricsSender.config = config
+}
+
 module.exports.dimensions = function(dimensions) {
   MetricsBuilder.dimensions = dimensions
 }

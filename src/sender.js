@@ -8,6 +8,7 @@ export default class MetricsSender {
   static metrics = []
   static enabled = true
   static logger = ConsoleLogger
+  static config = {}
 
   static queue(metric) {
     if (!this.hookInstalled) {
@@ -56,9 +57,10 @@ export default class MetricsSender {
   }
 
   static _cloudwatch() {
-    if (!this.cloudwatch)
-     this.cloudwatch = new AWS.CloudWatch()
-
+    if (!this.cloudwatch) {
+      const awsConfig = new AWS.Config(this.config);
+      this.cloudwatch = new AWS.CloudWatch(awsConfig);
+    }
     return this.cloudwatch
   }
 
